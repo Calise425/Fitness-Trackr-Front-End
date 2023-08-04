@@ -49,12 +49,20 @@ const App = () => {
         setToken={setAndStoreToken}/>
       </Route>
 
+      <Route exact path="/activities">
+        <Activities />
+      </Route>
+
       <Route exact path="/profile">
         <Profile />
       </Route>
 
       <Route exact path="/create_routine">
         <MakeRoutine />
+      </Route>
+
+      <Route exact path="/create_activity">
+        <MakeActivity />
       </Route>
 
     </Switch>

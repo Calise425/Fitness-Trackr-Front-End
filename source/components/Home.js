@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {fetchPublicRoutines} from "../api/helperCalls";
 
+//ADD SUB NAV- SEARCH BAR? 
+//RENDER ACTIVITES/ROUTINE DEPENDING ON HOW THEYRE RETURNED
 const Home = () => {
   const [routines, setRoutines] = useState([]);
 

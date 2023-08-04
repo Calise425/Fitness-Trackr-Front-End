@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { registerUser } from "../api/helperCalls";
 
 
-const Register = ({
-  setToken
-}) => {
+const Register = ({setToken}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passConfirm, setPassConfirm] = useState("");
@@ -18,7 +16,6 @@ const Register = ({
       username,
       password,
       setToken,
-      setLoggedIn,
       setSuccess,
       setError
     );
@@ -27,7 +24,7 @@ const Register = ({
     setPassConfirm("");
   };
 
-  return (
+  return success ? (<Redirect to="/profile"/>) : (
     <div className="form">
       <h2>Create an Account</h2>
       <p>
@@ -41,7 +38,7 @@ const Register = ({
           required
           value={username}
           placeholder="Enter your username"
-          minLength="8"
+          minLength="5"
           maxLength="20"
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -51,7 +48,7 @@ const Register = ({
           required
           value={password}
           placeholder="Enter your password"
-          minLength="8"
+          minLength="5"
           maxLength="20"
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -61,14 +58,13 @@ const Register = ({
           required
           value={passConfirm}
           placeholder="Re-enter your password"
-          minLength="8"
+          minLength="5"
           maxLength="20"
           onChange={(e) => setPassConfirm(e.target.value)}
         />
         <button>Register</button>
         {password !== passConfirm ? <p>Passwords do not match</p> : null}
       </form>
-      {success ? <h2>Successfully registered!</h2> : null}
       {error.length ? <p>{error}</p> : null}
     </div>
   );
