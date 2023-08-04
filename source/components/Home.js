@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {fetchPublicRoutines} from "../api/apiCalls";
+import {fetchPublicRoutines} from "../api/helperCalls";
 
 const Home = () => {
   const [routines, setRoutines] = useState([]);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { registerUser } from "../api/apiCalls";
+import { registerUser } from "../api/helperCalls";
 
 
 const Register = ({
