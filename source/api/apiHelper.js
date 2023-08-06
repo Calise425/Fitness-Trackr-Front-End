@@ -108,7 +108,7 @@ const fetchActivities = async () => {
     console.log(result);
     return result;
   } catch (err) {
-    console.error("No Posts Available", err);
+    console.error("No Activities Available", err);
   }
 };
 
@@ -150,9 +150,9 @@ const updateActivities = async (token) => {
     });
 
     const result = await response.json();
-    
+
   } catch (err) {
-    throw new Error("Failed to update post");
+    throw new Error("Failed to update activities");
   }
   console.log(result);
   if (!result.success) {
@@ -168,5 +168,6 @@ export {
   registerUser, 
   fetchUserData, 
   fetchActivities,
-  makeActivities
+  makeActivities,
+  updateActivities
 };
