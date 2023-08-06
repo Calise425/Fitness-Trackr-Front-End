@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {fetchPublicRoutines} from "../api/helperCalls";
+import {fetchPublicRoutines} from "../api/apiHelper";
 
 //ADD SUB NAV- SEARCH BAR? 
 //RENDER ACTIVITES/ROUTINE DEPENDING ON HOW THEYRE RETURNED
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <div className = "routines-container">
       <div className = "sub-nav">
-
+      <h1>Home/Routines</h1>
       </div>
 
       <div className = "routines">

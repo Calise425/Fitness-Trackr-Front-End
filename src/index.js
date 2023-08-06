@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
+import {Login, Home, Register} from "./components"
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -9,7 +10,6 @@ const App = () => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
-      setLoggedIn(true);
     }
   }, []);
 
@@ -21,7 +21,7 @@ const App = () => {
   <BrowserRouter>
     <div id="nav">
       <header>
-        <img src={companyLogo} />
+        {/* <img src={companyLogo} /> */}
         <h1>Fitness Trackr</h1>
       </header>
       <nav>
@@ -49,7 +49,7 @@ const App = () => {
         setToken={setAndStoreToken}/>
       </Route>
 
-      <Route exact path="/activities">
+      {/* <Route exact path="/activities">
         <Activities />
       </Route>
 
@@ -63,7 +63,7 @@ const App = () => {
 
       <Route exact path="/create_activity">
         <MakeActivity />
-      </Route>
+      </Route> */}
 
     </Switch>
   </BrowserRouter>
