@@ -95,6 +95,22 @@ const fetchUserData = async (token) => {
   }
 };
 
+const fetchRoutinesbyUsername = async (username, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${username}/routines`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const fetchActivities = async () => {
   try {
     const response = await fetch(`${BASE_URL}/activities`, {
