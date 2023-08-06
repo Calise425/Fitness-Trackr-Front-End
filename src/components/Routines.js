@@ -4,7 +4,7 @@ import {Link} from "react-router-dom"
 
 //ADD SUB NAV- SEARCH BAR? 
 //RENDER ACTIVITES/ROUTINE DEPENDING ON HOW THEYRE RETURNED
-const Home = () => {
+const Routines = () => {
   const [routines, setRoutines] = useState([]);
 
 
@@ -26,10 +26,11 @@ const Home = () => {
             </h2>
             <p className="goal">{routine.goal}</p>
             <div className="activity-attached-to-routine">
+              <h3>Activities:</h3>
               {routine.activities.map((activity) => {
                 return (
                   <p key = {activity.id}>
-                    {activity.name} | {activity.description} | {activity.duration} | {activity.count}
+                    {activity.name} | {activity.description} | Duration: {activity.duration} | Count: {activity.count}
                   </p>
                 );
               })}
@@ -41,4 +42,4 @@ const Home = () => {
   )
 }
 
-export default Home;
+export default Routines;

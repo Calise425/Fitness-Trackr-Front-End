@@ -1,0 +1,107 @@
+* {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background-color: rgb(93, 123, 147);
+  color: white;
+}
+
+#app {
+  height: 100%;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+#nav {
+  background-color: rgb(0, 67, 118);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  font-weight: bold;
+  font-size: larger;
+  color: rgb(255, 255, 255);
+  box-shadow: inset 0 -10px 20px rgb(57, 57, 57);
+}
+
+.sub-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 25px;
+  padding: 20px;
+}
+
+.form>h2 {
+  font-size: 250%;
+  margin-top: -30px;
+  margin-bottom: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 200%;
+}
+
+.form-text {
+  font-size: 150%;
+}
+
+input {
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 5px;
+  font-size: 75%
+}
+
+button {
+  font-size: 60%;
+  background-color: rgb(0, 67, 118);
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 5px 5px;
+}
+
+button:hover {
+  background-color: lightgrey;
+  box-shadow: 0px 5px 5px black;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  font-size: 2rem;
+}
+
+.routines-containter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.routine {
+  border: 2px solid rgb(0, 67, 118);
+  border-radius: 5px;
+  margin: 2px;
+  padding: 5px
+}

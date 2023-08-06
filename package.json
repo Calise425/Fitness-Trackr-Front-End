@@ -11,14 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "client": "^0.0.1",
-    "core-js-pure": "^3.32.0",
-    "dom": "^0.0.3",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-router-dom": "^5.3.4",
-    "react-scripts": "^5.0.1",
-    "scripts": "^0.1.0"
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-router-dom": "^6.13.0",
+    "react-scripts": "^5.0.1"
   },
   "browserslist": {
     "production": [
