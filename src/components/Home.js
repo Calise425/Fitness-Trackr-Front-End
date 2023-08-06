@@ -28,7 +28,7 @@ const Home = () => {
             <div className="activity-attached-to-routine">
               {routine.activities.map((activity) => {
                 return (
-                  <p>
+                  <p key = {activity.id}>
                     {activity.name} | {activity.description} | {activity.duration} | {activity.count}
                   </p>
                 );
