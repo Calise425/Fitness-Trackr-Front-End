@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
-import {Login, Home, Register} from "./components"
+import {Login, Home, Register, UserProfile} from "./components"
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -19,6 +19,11 @@ const App = () => {
     setToken(token);
   };
 
+  const logout = () => {
+    setToken("");
+    localStorage.removeItem("token");
+  };
+
   return (
   <BrowserRouter>
     <div id="nav">
@@ -31,9 +36,7 @@ const App = () => {
         <Link to={token ? "/profile" : "/"}>
           {token ? "Profile" : null}
         </Link>
-        <Link to={token ? "/logout" : "/login"}>
-          {token ? "Logout" : "Login"}
-        </Link>
+        {token ? <div onClick={logout}>Logout</div> : <Link to = "/login">Login</Link>}
       </nav>
     </div>
     <Switch>
@@ -53,7 +56,8 @@ const App = () => {
 
       <Route path={`/users/${user}`}>
         <UserProfile 
-        user = {user}/>
+        user = {user}
+        token = {token}/>
       </Route>
 
       {/* <Route path="/activities">

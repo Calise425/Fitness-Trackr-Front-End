@@ -1,6 +1,6 @@
 const BASE_URL = "https://fitnesstrac-kr.herokuapp.com/api/";
 
-
+// User API
 const registerUser = async (
   name, 
   pass, 
@@ -62,22 +62,6 @@ const login = async (username, password, setToken, setSuccess, setError) => {
   }
 };
 
-const fetchPublicRoutines = async () => {
-  try {
-  const response = await fetch(`${BASE_URL}/routines`, {
-    headers: {
-    'Content-Type': 'application/json',
-    },
-  });
-  
-  const result = await response.json();
-  console.log(result);
-  setRoutines(result);
-  } catch (err) {
-  console.error(err);
-  }
-};
-
 const fetchUserData = async (token) => {
   try {
     const response = await fetch(`${BASE_URL}/users/me`, {
@@ -95,7 +79,7 @@ const fetchUserData = async (token) => {
   }
 };
 
-const fetchRoutinesbyUsername = async (username, token) => {
+const fetchRoutinesbyUsername = async (username, token, setRoutines) => {
   try {
     const response = await fetch(`${BASE_URL}/users/${username}/routines`, {
       headers: {
@@ -105,12 +89,13 @@ const fetchRoutinesbyUsername = async (username, token) => {
     });
     const result = await response.json();
     console.log(result);
-    return result;
+    setRoutines(result);
   } catch (err) {
     console.error(err);
   }
 };
 
+// Activities API
 const fetchActivities = async () => {
   try {
     const response = await fetch(`${BASE_URL}/activities`, {
@@ -151,7 +136,7 @@ const makeActivities = async (token, name, description) => {
   }
 };
 
-const updateActivities = async (token, name, description) => {
+const updateActivities = async (token, activityId, name, description) => {
   try {
     const response = await fetch(`${BASE_URL}/activities/${activityId}`, {
       method: "PATCH",
@@ -174,6 +159,158 @@ const updateActivities = async (token, name, description) => {
   }
 };
 
+const fetchPublicRoutinesByActivityId = async (activityId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/activities/${activityId}/routines`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+    return result
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// Routines API
+const fetchPublicRoutines = async (setRoutines) => {
+  try {
+  const response = await fetch(`${BASE_URL}/routines`, {
+    headers: {
+    'Content-Type': 'application/json',
+    },
+  });
+  
+  const result = await response.json();
+  console.log(result);
+  setRoutines(result);
+  } catch (err) {
+  console.error(err);
+  }
+};
+
+const makeRoutines = async (token, name, goal, isPublic) => {
+  try {
+    const response = await fetch(`${BASE_URL}/routines`, {
+      method: "POST",
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        name: name,
+        goal: goal,
+        isPublic: isPublic
+      })
+    });
+    const result = await response.json();
+    console.log(result);
+    return result
+  } catch (err) {
+    console.error("Error creating routine", err);
+  }
+};
+
+const updateRoutines = async (token, routineId, name, goal) => {
+  try {
+    const response = await fetch(`${BASE_URL}/routines/${routineId}`, {
+      method: "PATCH",
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        name: name,
+        goal: goal
+      })
+    });
+    const result = await response.json();
+    console.log(result);
+    return result
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const deleteRoutine = async (token, routineId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/routines/${routineId}`, {
+      method: "DELETE",
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+    return result
+  } catch (err) {
+    console.error("Failed to delete routine", err);
+  }
+};
+
+const attachActivityToRoutine = async (routineId, activityId, count, duration) => {
+  try {
+    const response = await fetch(`${BASE_URL}/routines/${routineId}/activities`, {
+      method: "POST",
+      headers: {
+      'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        activityId: activityId,
+        count: count, 
+        duration: duration
+      })
+    });
+    const result = await response.json();
+    console.log(result);
+    return result
+  } catch (err) {
+    console.error("Error attaching activity to routine", err);
+  }
+};
+
+const updateRoutineActivity = async (routineActivityId, token, count, duration) => {
+  try {
+    const response = await fetch(`${BASE_URL}/routine_activities/${routineActivityId}`, {
+      method: "PATCH",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        count: count,
+        duration: duration
+      })
+    });
+
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error("Failed to update routine activity", err);
+  }
+};
+
+const deleteRoutineActivity = async (routineActivityId, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/routine_activities/${routineActivityId}`, {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error("Failed to delete routine activity", err);
+  }
+};
 
 export {
   fetchPublicRoutines, 
@@ -183,5 +320,12 @@ export {
   fetchActivities,
   makeActivities,
   updateActivities,
-  fetchRoutinesbyUsername
+  fetchRoutinesbyUsername,
+  fetchPublicRoutinesByActivityId,
+  makeRoutines,
+  updateRoutines,
+  deleteRoutine,
+  attachActivityToRoutine,
+  updateRoutineActivity,
+  deleteRoutineActivity
 };
