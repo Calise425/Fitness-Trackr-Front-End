@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { registerUser } from "../api/apiHelper";
 
 
@@ -24,7 +24,7 @@ const Register = ({setToken}) => {
     setPassConfirm("");
   };
 
-  return success ? (<Navigate to="/profile"/>) : (
+  return success ? (<Redirect to="/profile"/>) : (
     <div className="form">
       <h2>Create an Account</h2>
       <p>

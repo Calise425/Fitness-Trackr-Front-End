@@ -5,6 +5,7 @@ import {Login, Home, Register} from "./components"
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [user, setUser] = useState("");
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -18,6 +19,7 @@ const App = () => {
     setToken(token);
   };
 
+  return (
   <BrowserRouter>
     <div id="nav">
       <header>
@@ -36,37 +38,42 @@ const App = () => {
     </div>
     <Switch>
       <Route exact path="/">
-        <Home />
+        <Home setUser = {setUser} />
       </Route>
 
-      <Route exact path="/login">
+      <Route path="/login">
         <Login 
         setToken={setAndStoreToken}/>
       </Route>
 
-      <Route exact path="/register">
+      <Route path="/register">
         <Register 
         setToken={setAndStoreToken}/>
       </Route>
 
-      {/* <Route exact path="/activities">
+      <Route path={`/users/${user}`}>
+        <UserProfile 
+        user = {user}/>
+      </Route>
+
+      {/* <Route path="/activities">
         <Activities />
       </Route>
 
-      <Route exact path="/profile">
+      <Route path="/profile">
         <Profile />
       </Route>
 
-      <Route exact path="/create_routine">
+      <Route path="/create_routine">
         <MakeRoutine />
       </Route>
 
-      <Route exact path="/create_activity">
+      <Route path="/create_activity">
         <MakeActivity />
       </Route> */}
 
     </Switch>
   </BrowserRouter>
-}
+)}
 
 ReactDOM.render(<App />, document.getElementById("app"));

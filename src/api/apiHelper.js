@@ -112,7 +112,7 @@ const fetchActivities = async () => {
   }
 };
 
-const makeActivities = async (token) => {
+const makeActivities = async (token, name, description) => {
   try {
     const response = await fetch(`${BASE_URL}/activities`, {
       method: "POST",
@@ -135,7 +135,7 @@ const makeActivities = async (token) => {
   }
 };
 
-const updateActivities = async (token) => {
+const updateActivities = async (token, name, description) => {
   try {
     const response = await fetch(`${BASE_URL}/activities/${activityId}`, {
       method: "PATCH",
@@ -151,14 +151,11 @@ const updateActivities = async (token) => {
 
     const result = await response.json();
 
+    console.log(result);
+    return result;
   } catch (err) {
-    throw new Error("Failed to update activities");
+    console.error("Failed to update activities", err);
   }
-  console.log(result);
-  if (!result.success) {
-    throw new Error(result.error.message);
-  }
-  return result.data;
 };
 
 

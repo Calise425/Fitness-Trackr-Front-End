@@ -6,6 +6,7 @@ import {fetchPublicRoutines} from "../api/apiHelper";
 const Home = () => {
   const [routines, setRoutines] = useState([]);
 
+
   useEffect(()=>{
     fetchPublicRoutines(setRoutines);
   }, [])
@@ -13,17 +14,17 @@ const Home = () => {
   return (
     <div className = "routines-container">
       <div className = "sub-nav">
-      <h1>Home/Routines</h1>
+      <h2>Public Routines</h2>
       </div>
 
       <div className = "routines">
         {routines.map((routine)=>(
-          <div key = {routine.id} className = "routine">
-            <h2 className = "routine-name">
-              {routine.name}
+          <div key={routine.id} className="routine">
+            <h2 className="routine-name">
+              {routine.name} |{' '}
+              <Link to={`/users/${routine.creatorName}`}>{routine.creatorName}</Link>
             </h2>
-            <p className = "goal">{routine.goal}</p>
-            <p className = "creatorName">{routine.creatorName}</p>
+            <p className="goal">{routine.goal}</p>
           </div>
         ))}
       </div>
