@@ -182,5 +182,6 @@ export {
   fetchUserData, 
   fetchActivities,
   makeActivities,
-  updateActivities
+  updateActivities,
+  fetchRoutinesbyUsername
 };
