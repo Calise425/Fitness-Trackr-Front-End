@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
-import {Login, Home, Register} from "./components"
+import {Login, Home, Register, UserProfile} from "./components"
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");

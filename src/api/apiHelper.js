@@ -62,7 +62,7 @@ const login = async (username, password, setToken, setSuccess, setError) => {
   }
 };
 
-const fetchPublicRoutines = async () => {
+const fetchPublicRoutines = async (setRoutines) => {
   try {
   const response = await fetch(`${BASE_URL}/routines`, {
     headers: {
@@ -92,6 +92,22 @@ const fetchUserData = async (token) => {
     return result;
   } catch (err) {
     console.error("Couldn't fetch user data", err);
+  }
+};
+
+const fetchRoutinesbyUsername = async (username, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${username}/routines`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error(err);
   }
 };
 

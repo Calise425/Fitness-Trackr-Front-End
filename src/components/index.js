@@ -5,3 +5,4 @@ export { default as Home } from "./Home.js";
 export { default as Profile } from "./Profile.js";
 export { default as Register } from "./Register.js";
 export { default as Activities } from "./Activities.js";
+export { default as UserProfile } from "./UserProfile.js"
