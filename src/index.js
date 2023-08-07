@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
-import {Login, Home, Register, UserProfile} from "./components"
+import {Login, Routines, Register, UserProfile, Activities} from "./components"
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -32,7 +32,8 @@ const App = () => {
         <h1>Fitness Trackr</h1>
       </header>
       <nav>
-        <Link to="/">Home</Link>
+        <Link to="/routines">Routines</Link>
+        <Link to="/activities">Activities</Link>
         <Link to={token ? "/profile" : "/"}>
           {token ? "Profile" : null}
         </Link>
@@ -40,8 +41,16 @@ const App = () => {
       </nav>
     </div>
     <Switch>
+
       <Route exact path="/">
-        <Home setUser = {setUser} />
+        <div className = "home">
+          <h2>Welcome to Fitness Trackr!</h2>
+          <p>Please Register or Login to create routines and activities for yourself</p>
+        </div>
+      </Route>
+
+      <Route exact path="/routines">
+        <Routines setUser = {setUser} />
       </Route>
 
       <Route path="/login">
@@ -60,11 +69,11 @@ const App = () => {
         token = {token}/>
       </Route>
 
-      {/* <Route path="/activities">
+      <Route path="/activities">
         <Activities />
       </Route>
 
-      <Route path="/profile">
+      {/* <Route path="/profile">
         <Profile />
       </Route>
 

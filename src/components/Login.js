@@ -20,7 +20,7 @@ const Login = ({setToken}) => {
   ) : (
     <div className="form">
       <h2>Login</h2>
-      <p>
+      <p className = "form-text">
         New User? Register <Link to="/register">here</Link>
       </p>
 

@@ -1,4 +1,4 @@
-const BASE_URL = "https://fitnesstrac-kr.herokuapp.com/api/";
+const BASE_URL = "https://fitnesstrac-kr.herokuapp.com/api";
 
 // User API
 const registerUser = async (
@@ -8,7 +8,7 @@ const registerUser = async (
   setSuccess, 
   setError) => {
   try {
-    const response = await fetch(`${BASE_URL}/register`, {
+    const response = await fetch(`${BASE_URL}/users/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,6 +30,7 @@ const registerUser = async (
         setSuccess(true);
       }
     }
+    console.log(result);
     return result;
   } catch (err) {
     console.error(err);

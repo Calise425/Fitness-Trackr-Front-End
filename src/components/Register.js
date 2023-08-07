@@ -27,7 +27,7 @@ const Register = ({setToken}) => {
   return success ? (<Redirect to="/profile"/>) : (
     <div className="form">
       <h2>Create an Account</h2>
-      <p>
+      <p className = "form-text">
         Already a user? Click <Link to="/login">here</Link>
       </p>
 
