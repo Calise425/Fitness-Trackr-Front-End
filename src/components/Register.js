@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../api/apiHelper";
 
 
 const Register = ({setToken}) => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passConfirm, setPassConfirm] = useState("");

@@ -54,7 +54,7 @@ const App = () => {
         <nav>
           <Link to="/routines">Routines</Link>
           <Link to="/activities">Activities</Link>
-          <Link to={token ? "/profile" : "/"}>{token ? "Profile" : "Login"}</Link>
+          <Link to={token ? "/profile" : "/login"}>{token ? "Profile" : "Login"}</Link>
           {token && <div onClick={logout}>Logout</div>}
         </nav>
       </div>
