@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { fetchActivities, makeActivities } from "../api/apiHelper";
-const Activities = ({ token }) => {
+
+const ActivitiesList = ({ token }) => {
   const [activities, setActivities] = useState([]);
   const [newActivityName, setNewActivityName] = useState("");
   const [newActivityDescription, setNewActivityDescription] = useState("");
   const [error, setError] = useState("");
+
   useEffect(() => {
     fetchActivities()
       .then((data) => setActivities(data))
       .catch((error) => console.error("Error fetching activities", error));
   }, []);
+
   const handleMakeActivities = (e) => {
     e.preventDefault();
+
     // Check if the activity already exists
     const existingActivity = activities.find(
       (activity) => activity.name === newActivityName
@@ -20,6 +24,7 @@ const Activities = ({ token }) => {
       setError("Activity already exists");
       return;
     }
+
     // Create the new activity
     makeActivities(token, newActivityName, newActivityDescription)
       .then((newActivity) => {
@@ -30,6 +35,7 @@ const Activities = ({ token }) => {
       })
       .catch((error) => console.error("Error creating activity", error));
   };
+
   return (
     <div>
       <h2>Activities</h2>
@@ -66,4 +72,5 @@ const Activities = ({ token }) => {
     </div>
   );
 };
-export default Activities;
+
+export default ActivitiesList;

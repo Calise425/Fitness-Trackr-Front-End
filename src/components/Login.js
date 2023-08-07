@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../api/apiHelper.js";
 
 const Login = ({setToken}) => {
+  const navigate = useNavigate();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [username, setUsername] = useState("");
@@ -16,7 +17,7 @@ const Login = ({setToken}) => {
   };
 
   return success ? (
-    <Redirect to="/profile" />
+    navigate("/profile")
   ) : (
     <div className="form">
       <h2>Login</h2>
@@ -53,4 +54,4 @@ const Login = ({setToken}) => {
   );
 };
 
-export default Login
+export default Login;

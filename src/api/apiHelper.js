@@ -2,8 +2,8 @@ const BASE_URL = "https://fitnesstrac-kr.herokuapp.com/api";
 
 // User API
 const registerUser = async (
-  name, 
-  pass, 
+  username, 
+  password, 
   setToken, 
   setSuccess, 
   setError) => {
@@ -15,8 +15,8 @@ const registerUser = async (
       },
       body: JSON.stringify({
         user: {
-          username: name,
-          password: pass,
+          username: username,
+          password: password,
         },
       }),
     });
@@ -80,19 +80,26 @@ const fetchUserData = async (token) => {
   }
 };
 
-const fetchRoutinesbyUsername = async (username, token, setRoutines) => {
+const fetchRoutinesByUsername = async (creatorName, token, setRoutines) => {
   try {
-    const response = await fetch(`${BASE_URL}/users/${username}/routines`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    if (typeof token === 'string' && token.trim() !== '') {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${BASE_URL}/users/${creatorName}/routines`, {
+      headers,
     });
     const result = await response.json();
-    console.log(result);
+    console.log("API Response:", result);
     setRoutines(result);
-  } catch (err) {
-    console.error(err);
+    return result;
+  } catch (error) {
+    console.error("Error fetching routines by creator", error);
+    throw error;
   }
 };
 
@@ -321,7 +328,7 @@ export {
   fetchActivities,
   makeActivities,
   updateActivities,
-  fetchRoutinesbyUsername,
+  fetchRoutinesByUsername,
   fetchPublicRoutinesByActivityId,
   makeRoutines,
   updateRoutines,

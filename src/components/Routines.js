@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {fetchPublicRoutines} from "../api/apiHelper";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
+import { fetchPublicRoutines } from "../api/apiHelper";
 
-//ADD SUB NAV- SEARCH BAR? 
-//RENDER ACTIVITES/ROUTINE DEPENDING ON HOW THEYRE RETURNED
-const Routines = () => {
-  const [routines, setRoutines] = useState([]);
+const RoutineList = ({ routines, setRoutines }) => {
 
-
-  useEffect(()=>{
+  useEffect(() => {
     fetchPublicRoutines(setRoutines);
-  }, [])
+  }, []);
 
   return (
     <div className="routines-container">
@@ -27,19 +23,19 @@ const Routines = () => {
             <p className="goal">{routine.goal}</p>
             <div className="activity-attached-to-routine">
               <h3>Activities:</h3>
-              {routine.activities.map((activity) => {
-                return (
-                  <p key = {activity.id}>
-                    {activity.name} | {activity.description} | Duration: {activity.duration} | Count: {activity.count}
-                  </p>
-                );
-              })}
+              {routine.activities.map((activity) => (
+                <p key={activity.id}>
+                  <Link to={`/activities/${activity.id}`}>{activity.name}</Link>
+                  {" | "}
+                  {activity.description} | Duration: {activity.duration} | Count: {activity.count}
+                </p>
+              ))}
             </div>
           </div>
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Routines;
+export default RoutineList;

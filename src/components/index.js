@@ -1,8 +1,9 @@
 export { default as Login } from "./Login.js";
 export { default as MakeActivity } from "./MakeActivity.js";
-export { default as MakeRoutine } from "./MakeRoutine.js";
-export { default as Routines } from "./Routines.js";
-export { default as Profile } from "./Profile.js";
+export { default as CreateRoutine } from "./MakeRoutine.js";
+export { default as RoutineList } from "./Routines.js";
 export { default as Register } from "./Register.js";
-export { default as Activities } from "./Activities.js";
-export { default as UserProfile } from "./UserProfile.js"
+export { default as ActivitiesList } from "./Activities.js";
+export { default as MyRoutines } from "./UserProfile.js";
+export { default as ActivityRoutines } from "./RoutinesByActivity.js";
+export { default as RoutinesByUsername } from "./RoutinesByUser.js";

@@ -24,7 +24,9 @@ const Register = ({setToken}) => {
     setPassConfirm("");
   };
 
-  return success ? (<Redirect to="/profile"/>) : (
+  return success ? (
+    navigate("/profile")
+  ) : (
     <div className="form">
       <h2>Create an Account</h2>
       <p className = "form-text">
