@@ -3,22 +3,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../api/apiHelper";
 
 
-const Register = ({setToken}) => {
+const Register = ({setToken, setUser}) => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passConfirm, setPassConfirm] = useState("");
+  const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     registerUser(
-      username,
-      password,
-      setToken,
+      username, 
+      password, 
+      setToken, 
+      setMessage,
       setSuccess,
-      setError
+      setUser
     );
     setUsername("");
     setPassword("");
@@ -26,9 +27,9 @@ const Register = ({setToken}) => {
   };
 
   return success ? (
-    navigate("/profile")
+    navigate("/my-routines")
   ) : (
-    <div className="form">
+    <div className="login-form">
       <h2>Create an Account</h2>
       <p className = "form-text">
         Already a user? Click <Link to="/login">here</Link>
@@ -68,7 +69,7 @@ const Register = ({setToken}) => {
         <button>Register</button>
         {password !== passConfirm ? <p>Passwords do not match</p> : null}
       </form>
-      {error.length ? <p>{error}</p> : null}
+      {message ? <p>{message}</p> : null}
     </div>
   );
 };

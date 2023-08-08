@@ -7,7 +7,7 @@ import {
   Register, 
   MyRoutines, 
   ActivitiesList,
-  CreateRoutines,
+  CreateRoutine,
   ActivityRoutines,
   RoutinesByUsername
 } from "./components";
@@ -24,6 +24,7 @@ const Home = () => {
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [user, setUser] = useState("");
+  const [me, setMe] = useState("")
   const [routines, setRoutines] = useState([]);
   const { username } = useParams();
 
@@ -54,16 +55,17 @@ const App = () => {
         <nav>
           <Link to="/routines">Routines</Link>
           <Link to="/activities">Activities</Link>
-          <Link to={token ? "/profile" : "/login"}>{token ? "Profile" : "Login"}</Link>
-          {token && <div onClick={logout}>Logout</div>}
+          <Link to={token ? "/my-routines" : "/login"}>{token ? "My Routines" : "Login"}</Link>
+          {token && <a onClick={logout}>Logout</a>}
         </nav>
       </div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/routines" element={<RoutineList routines={routines} setRoutines={setRoutines} />} />
-        <Route path="/login" element={<Login setToken={setAndStoreToken} />} />
-        <Route path="/register" element={<Register setToken={setAndStoreToken} />} />
-        <Route path="/users/me" element={<MyRoutines user={user} setUser={setUser} token={token} routines={routines} setRoutines={setRoutines}/>} />
+        <Route path="/login" element={<Login setToken={setAndStoreToken} setUser = {setMe} />} />
+        <Route path="/register" element={<Register setToken={setAndStoreToken} setUser = {setMe} />} />
+        <Route path="/my-routines" element={<MyRoutines me = {me} setUser={setUser} token={token} routines={routines} setRoutines={setRoutines}/>} />
+        <Route path="/create-routine" element={<CreateRoutine token={token} />}/>
         <Route path="/activities" element={<ActivitiesList token={token} />} />
         <Route path="/activities/:activityId" element={<ActivityRoutines />} />
         <Route path="/users/:username" element={<RoutinesByUsername token={token} routines={routines} creatorName={username} setRoutines={setRoutines} />} />

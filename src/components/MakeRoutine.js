@@ -11,11 +11,12 @@ const CreateRoutine = ({ token }) => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
+        console.log("routine submitted!", token, name, goal, isPublic);
         const result = await makeRoutines(token, name, goal, isPublic);
-        if (result.success) {
+        if (result.id) {
           setSuccess(true);
         } else {
-          setError(result.error.message);
+          setError(result.message);
         }
       } catch (err) {
         console.error("Error creating routine", err);
@@ -29,7 +30,6 @@ const CreateRoutine = ({ token }) => {
       </div>
     ) : (
       <div className="create-routine-form">
-        <h2>Create New Routine</h2>
         <form onSubmit={handleSubmit}>
           <label>Name:</label>
           <input

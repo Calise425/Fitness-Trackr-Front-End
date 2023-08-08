@@ -2,24 +2,23 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../api/apiHelper.js";
 
-const Login = ({setToken}) => {
+const Login = ({setToken, setUser}) => {
   const navigate = useNavigate();
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(username, password, setToken, setSuccess, setError);
+    login(username, password, setToken, setMessage, setSuccess, setUser);
     setUsername("");
     setPassword("");
   };
 
   return success ? (
-    navigate("/profile")
-  ) : (
-    <div className="form">
+    navigate("/my-routines")) : (
+    <div className="login-form">
       <h2>Login</h2>
       <p className = "form-text">
         New User? Register <Link to="/register">here</Link>
@@ -48,8 +47,7 @@ const Login = ({setToken}) => {
         />
         <button>Login</button>
       </form>
-      {success ? <p>Successfully Logged In</p> : null}
-      {error.length ? <p>{error}</p> : null}
+      {message ? <p>{message}</p> : null}
     </div>
   );
 };

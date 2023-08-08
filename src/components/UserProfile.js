@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { 
   fetchRoutinesByUsername, 
   makeRoutines, 
@@ -7,11 +7,14 @@ import {
   deleteRoutine,
   attachActivityToRoutine,
   updateRoutineActivity,
-  deleteRoutineActivity
+  deleteRoutineActivity,
+  fetchUserData
 } from "../api/apiHelper";
+import CreateRoutine from "./MakeRoutine";
 
-const MyRoutines = ({ token, routines, setRoutines }) => {
-  const { username } = useParams();
+const MyRoutines = ({ me, token, routines, setRoutines }) => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("")
   const [showRoutineForm, setShowRoutineForm] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [updateRoutineId, setUpdateRoutineId] = useState(null);
@@ -20,7 +23,13 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
   const [activities, setActivities] = useState([]);
 
   useEffect(() => {
-    fetchRoutinesByUsername(username, token, setRoutines);
+    fetchUserData(token, setUsername);
+  }, [token]);
+
+  useEffect(() => {
+    if (username) {
+      fetchRoutinesByUsername(username, token, setRoutines);
+    }
   }, [username, token]);
 
   const handleCreateRoutine = async (name, goal) => {
@@ -129,12 +138,11 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
 
   return (
     <div className="my-routines">
-      <h2>My Routines</h2>
-      <button onClick={() => setShowRoutineForm(true)}>Create New Routine</button>
-      {showRoutineForm && (
-        <RoutineForm onCreate={handleCreateRoutine} onCancel={() => setShowRoutineForm(false)} />
-      )}
-
+      <div className = "routine-header">
+        <h2>Create New Routine</h2>
+        <CreateRoutine token = {token} onCreate={handleCreateRoutine} onCancel={() => setShowRoutineForm(false) } />
+        <h2>My Routines</h2>
+      </div>
       {routines.map((routine) => (
         <div key={routine.id} className="routine">
           <h3>{routine.name}</h3>

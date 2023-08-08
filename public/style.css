@@ -7,13 +7,28 @@
 
 body {
   height: 100vh;
-  background-color: rgb(93, 123, 147);
+  background-color: rgb(72, 72, 72);
   color: white;
 }
 
 #app {
   height: 100%;
   font-family: 'Times New Roman', Times, serif;
+}
+
+nav {
+  display: flex;
+  color: white;
+  justify-content: space-around;
+}
+
+a {
+  color: white;
+  margin: 5px
+}
+
+h2 {
+  font-size: 2rem;
 }
 
 #nav {
@@ -35,6 +50,14 @@ body {
   padding: 10px;
 }
 
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 200%;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -50,12 +73,12 @@ body {
   margin-bottom: 10px;
 }
 
-form {
+
+
+.create-routine-form {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 200%;
+  flex-direction: row;
+  font-size: 1.5rem;
 }
 
 .form-text {
@@ -66,7 +89,7 @@ input {
   border: 1px solid black;
   border-radius: 5px;
   margin: 5px;
-  font-size: 75%
+  font-size: 60%
 }
 
 button {
@@ -92,6 +115,13 @@ button:hover {
   font-size: 2rem;
 }
 
+.routine-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .routines-containter {
   display: flex;
   flex-direction: column;
@@ -100,7 +130,7 @@ button:hover {
 }
 
 .routine {
-  border: 2px solid rgb(0, 67, 118);
+  border: 2px solid rgb(154, 154, 154);
   border-radius: 5px;
   margin: 2px;
   padding: 5px

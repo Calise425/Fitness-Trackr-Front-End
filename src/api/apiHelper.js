@@ -5,8 +5,9 @@ const registerUser = async (
   username, 
   password, 
   setToken, 
-  setSuccess, 
-  setError) => {
+  setMessage,
+  setSuccess,
+  setUser) => {
   try {
     const response = await fetch(`${BASE_URL}/users/register`, {
       method: "POST",
@@ -14,22 +15,17 @@ const registerUser = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user: {
-          username: username,
-          password: password,
-        },
+        username,
+        password
       }),
     });
     const result = await response.json();
-    if (!result.success) {
-      setError(result.error.message);
-    } else {
-      setToken(result.data.token);
-      if (result.data.token) {
-        setLoggedIn(true);
-        setSuccess(true);
-      }
+    if (result.token) {
+      setSuccess(true)
+      setUser(result.user.username)
     }
+    setToken(result.token);
+    setMessage(result.message);
     console.log(result);
     return result;
   } catch (err) {
@@ -37,7 +33,7 @@ const registerUser = async (
   }
 };
 
-const login = async (username, password, setToken, setSuccess, setError) => {
+const login = async (username, password, setToken, setMessage, setSuccess, setUser) => {
   try {
     const response = await fetch(`${BASE_URL}/users/login`, {
       method: "POST",
@@ -50,20 +46,20 @@ const login = async (username, password, setToken, setSuccess, setError) => {
       })
     });
     const result = await response.json();
-    if (!result.success) {
-      setError(result.error.message);
-    } else {
-      setLoggedIn(true);
-      setSuccess(true);
-      setToken(result.data.token);
+    console.log(result);
+    if (result.token) {
+      setSuccess(true)
+      setUser(result.user.username)
     }
+    setToken(result.token);
+    setMessage(result.message);
     return result;
   } catch (err) {
     console.error(err);
   }
 };
 
-const fetchUserData = async (token) => {
+const fetchUserData = async (token, setUsername) => {
   try {
     const response = await fetch(`${BASE_URL}/users/me`, {
       headers: {
@@ -73,14 +69,14 @@ const fetchUserData = async (token) => {
     });
 
     const result = await response.json();
-
+    setUsername(result.username);
     return result;
   } catch (err) {
     console.error("Couldn't fetch user data", err);
   }
 };
 
-const fetchRoutinesByUsername = async (creatorName, token, setRoutines) => {
+const fetchRoutinesByUsername = async (username, token, setRoutines) => {
   try {
     const headers = {
       'Content-Type': 'application/json',
@@ -90,11 +86,10 @@ const fetchRoutinesByUsername = async (creatorName, token, setRoutines) => {
       headers.Authorization = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${BASE_URL}/users/${creatorName}/routines`, {
+    const response = await fetch(`${BASE_URL}/users/${username}/routines`, {
       headers,
     });
     const result = await response.json();
-    console.log("API Response:", result);
     setRoutines(result);
     return result;
   } catch (error) {
@@ -200,6 +195,7 @@ const fetchPublicRoutines = async (setRoutines) => {
 };
 
 const makeRoutines = async (token, name, goal, isPublic) => {
+  console.log("CONSOLE LOG WITHIN MAKE ROUTINES", token, name, goal, isPublic)
   try {
     const response = await fetch(`${BASE_URL}/routines`, {
       method: "POST",
