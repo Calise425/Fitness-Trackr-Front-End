@@ -24,6 +24,7 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
   const [routineId, setRoutineId] = useState(null);
   const [activityId, setActivityId] = useState(null);
   const [activities, setActivities] = useState([]);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     fetchActivities(setActivities);
@@ -100,7 +101,22 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
     const routineId = routine.id;
     try {
       const result = await attachActivityToRoutine(routineId, activityId, count, duration);
-      console.log(result)
+      console.log(result);
+  
+      // Assuming the result includes the newly added activity
+      const newActivity = result.activity;
+  
+      // Update the routines state to include the new activity in the routine's activities array
+      setRoutines((prevRoutines) =>
+        prevRoutines.map((prevRoutine) =>
+          prevRoutine.id === routineId
+            ? {
+                ...prevRoutine,
+                activities: [...prevRoutine.activities, newActivity],
+              }
+            : prevRoutine
+        )
+      );
     } catch (error) {
       console.error("Error attaching activity to routine", error);
     }
@@ -182,12 +198,12 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
           </div>
           <h3>Activities</h3>
           {routine.activities.map((activity)=>
-            (<div className = "activities-on-routines">
+            (<div key={activity.id} className = "activities-on-routines">
               <p>Name: {activity.name} | Description: {activity.description} | Count: {activity.count} | Duration: {activity.duration}</p>
-              <button onClick={handleEdit(activity)}>Edit Activity</button>
+              <button onClick={() => handleEdit(activity)}>Edit Activity</button>
               <button>Remove Activity From Routine</button>
-            </div>)
-          )}
+            </div>
+          ))}
           <button onClick={() => updateHandler(routine)}>Update</button>
           <button onClick={() => handleDeleteRoutine(routine.id)}>Delete</button>
         </div>
@@ -197,8 +213,3 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
 };
 
 export default MyRoutines;
-
-
-
-
-

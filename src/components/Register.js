@@ -11,24 +11,20 @@ const Register = ({setToken, setUser}) => {
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    registerUser(
-      username, 
-      password, 
-      setToken, 
-      setMessage,
-      setSuccess,
-      setUser
-    );
-    setUsername("");
-    setPassword("");
-    setPassConfirm("");
+    try {
+      await registerUser(username, password, setToken, setMessage, setSuccess, setUser);
+      setUsername("");
+      setPassword("");
+      setPassConfirm("");
+      navigate("/my-routines");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  return success ? (
-    navigate("/my-routines")
-  ) : (
+  return(
     <div className="login-form">
       <h2>Create an Account</h2>
       <p className = "form-text">

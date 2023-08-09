@@ -9,15 +9,19 @@ const Login = ({setToken, setUser}) => {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login(username, password, setToken, setMessage, setSuccess, setUser);
-    setUsername("");
-    setPassword("");
+    try {
+      await login(username, password, setToken, setMessage, setSuccess, setUser);
+      setUsername("");
+      setPassword("");
+      navigate("/my-routines");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  return success ? (
-    navigate("/my-routines")) : (
+  return(
     <div className="login-form">
       <h2>Login</h2>
       <p className = "form-text">
