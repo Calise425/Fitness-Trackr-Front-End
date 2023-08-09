@@ -64,12 +64,10 @@ const App = () => {
         <Route path="/routines" element={<RoutineList routines={routines} setRoutines={setRoutines} />} />
         <Route path="/login" element={<Login setToken={setAndStoreToken} setUser = {setMe} />} />
         <Route path="/register" element={<Register setToken={setAndStoreToken} setUser = {setMe} />} />
-        <Route path="/my-routines" element={<MyRoutines me = {me} setUser={setUser} token={token} routines={routines} setRoutines={setRoutines}/>} />
-        <Route path="/create-routine" element={<CreateRoutine token={token} />}/>
+        <Route path="/my-routines" element={<MyRoutines setUser={setUser} token={token} routines={routines} setRoutines={setRoutines}/>} />
         <Route path="/activities" element={<ActivitiesList token={token} />} />
         <Route path="/activities/:activityId" element={<ActivityRoutines />} />
         <Route path="/users/:username" element={<RoutinesByUsername token={token} routines={routines} creatorName={username} setRoutines={setRoutines} />} />
-
       </Routes>
     </BrowserRouter>
   );

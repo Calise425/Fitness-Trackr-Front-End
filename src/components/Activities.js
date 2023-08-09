@@ -38,29 +38,30 @@ const ActivitiesList = ({ token }) => {
 
   return (
     <div>
-      <h2>Activities</h2>
-      {token && (
-        <form onSubmit={handleMakeActivities}>
-          <label>Name:</label>
-          <input
-            type="text"
-            value={newActivityName}
-            required
-            onChange={(e) => setNewActivityName(e.target.value)}
-          />
-          <label>Description:</label>
-          <input
-            type="text"
-            value={newActivityDescription}
-            required
-            onChange={(e) => setNewActivityDescription(e.target.value)}
-          />
-          <button>Create Activity</button>
-          {error && <p>{error}</p>}
-        </form>
-      )}
-      <div>
-        <h3>All Activities</h3>
+      <div className="activities-header create-form">
+        <h2>Activities</h2>
+        {token && (
+          <form onSubmit={handleMakeActivities}>
+            <label>Name:</label>
+            <input
+              type="text"
+              value={newActivityName}
+              required
+              onChange={(e) => setNewActivityName(e.target.value)}
+            />
+            <label>Description:</label>
+            <input
+              type="text"
+              value={newActivityDescription}
+              required
+              onChange={(e) => setNewActivityDescription(e.target.value)}
+            />
+            <button>Create Activity</button>
+            {error && <p>{error}</p>}
+          </form>
+        )}
+      </div>
+      <div className = "activities-list">
         <ul>
           {activities.map((activity) => (
             <li key={activity.id}>

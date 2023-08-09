@@ -35,7 +35,7 @@ const Register = ({setToken, setUser}) => {
         Already a user? Click <Link to="/login">here</Link>
       </p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-form">
         <label>Username:</label>
         <input
           type="text"

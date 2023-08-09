@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { 
   fetchRoutinesByUsername, 
   makeRoutines, 
@@ -8,19 +7,27 @@ import {
   attachActivityToRoutine,
   updateRoutineActivity,
   deleteRoutineActivity,
-  fetchUserData
+  fetchUserData,
+  fetchActivities
 } from "../api/apiHelper";
-import CreateRoutine from "./MakeRoutine";
 
-const MyRoutines = ({ me, token, routines, setRoutines }) => {
-  const navigate = useNavigate();
+const MyRoutines = ({ token, routines, setRoutines }) => {
   const [username, setUsername] = useState("")
+  const [name, setName] = useState("");
+  const [goal, setGoal] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
+  const [count, setCount] = useState(1)
+  const [duration, setDuration] = useState(10)
+  const [error, setError] = useState("");
   const [showRoutineForm, setShowRoutineForm] = useState(false);
-  const [showUpdateForm, setShowUpdateForm] = useState(false);
-  const [updateRoutineId, setUpdateRoutineId] = useState(null);
-  const [showActivityForm, setShowActivityForm] = useState(false);
-  const [activityRoutineId, setActivityRoutineId] = useState(null);
+  const [update, setUpdate] = useState(false)
+  const [routineId, setRoutineId] = useState(null);
+  const [activityId, setActivityId] = useState(null);
   const [activities, setActivities] = useState([]);
+
+  useEffect(() => {
+    fetchActivities(setActivities);
+  }, [])
 
   useEffect(() => {
     fetchUserData(token, setUsername);
@@ -30,33 +37,54 @@ const MyRoutines = ({ me, token, routines, setRoutines }) => {
     if (username) {
       fetchRoutinesByUsername(username, token, setRoutines);
     }
-  }, [username, token]);
+  }, [username, token, showRoutineForm]);
 
-  const handleCreateRoutine = async (name, goal) => {
-    try {
-      const newRoutine = await makeRoutines(name, goal, token);
-      setRoutines([...routines, newRoutine]);
-      setShowRoutineForm(false);
-    } catch (error) {
-      console.error("Error creating routine", error);
-    }
-  };
-
-  const handleUpdateRoutine = async (routineId, name, goal) => {
-    try {
-      await updateRoutines(routineId, name, goal, token);
-      const updatedRoutines = routines.map((routine) => {
-        if (routine.id === routineId) {
-          return { ...routine, name, goal };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!update) {
+      try {
+        console.log("routine submitted!", token, name, goal, isPublic);
+        const result = await makeRoutines(token, name, goal, isPublic);
+        if (result.id) {
+          setSuccess(true)
+          setShowRoutineForm(false)
+          setUpdate(false);
+          setError("")
+          setName("");
+          setGoal("")
+          setRoutineId(null);
+        } else {
+          setError(result.message);
         }
-        return routine;
-      });
-      setRoutines(updatedRoutines);
-      setShowUpdateForm(false);
-    } catch (error) {
-      console.error("Error updating routine", error);
+      } catch (err) {
+        console.error("Error creating routine", err);
+        setError("Error creating routine. Please try again.");
+      }
+    }
+    else {
+      console.log("UPDATE ROUTINE HAPPENING", token, routineId, name, goal)
+      try {
+        const result = await updateRoutines(routineId, token, name, goal);
+        console.log(result);
+        setShowRoutineForm(false);
+        setUpdate(false);
+        setError("")
+        setName("");
+        setGoal("")
+        setRoutineId(null);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
+
+  const updateHandler = (routine) => {
+    setShowRoutineForm(!showRoutineForm); 
+    setUpdate(!update);
+    setGoal(routine.goal);
+    setName(routine.name);
+    setRoutineId(routine.id);
+  }
 
   const handleDeleteRoutine = async (routineId) => {
     try {
@@ -68,107 +96,100 @@ const MyRoutines = ({ me, token, routines, setRoutines }) => {
     }
   };
 
-  const handleAddActivity = async (routineId, activityId, count, duration) => {
+  const handleAddActivity = async (routine) => {
+    const routineId = routine.id;
     try {
-      await attachActivityToRoutine(routineId, activityId, count, duration);
-      const updatedRoutines = routines.map((routine) => {
-        if (routine.id === routineId) {
-          return {
-            ...routine,
-            activities: [
-              ...routine.activities,
-              {
-                id: Date.now(),
-                activityId,
-                count,
-                duration,
-              },
-            ],
-          };
-        }
-        return routine;
-      });
-      setRoutines(updatedRoutines);
-      setShowActivityForm(false);
+      const result = await attachActivityToRoutine(routineId, activityId, count, duration);
+      console.log(result)
     } catch (error) {
       console.error("Error attaching activity to routine", error);
     }
   };
 
-  const handleUpdateActivity = async (routineId, routineActivityId, count, duration) => {
-    try {
-      await updateRoutineActivity(routineActivityId, token, count, duration);
-      const updatedRoutines = routines.map((routine) => {
-        if (routine.id === routineId) {
-          return {
-            ...routine,
-            activities: routine.activities.map((activity) => {
-              if (activity.id === routineActivityId) {
-                return { ...activity, count, duration };
-              }
-              return activity;
-            }),
-          };
-        }
-        return routine;
-      });
-      setRoutines(updatedRoutines);
-    } catch (error) {
-      console.error("Error updating routine activity", error);
-    }
-  };
-
-  const handleRemoveActivity = async (routineId, routineActivityId) => {
-    try {
-      await deleteRoutineActivity(routineActivityId, token);
-      const updatedRoutines = routines.map((routine) => {
-        if (routine.id === routineId) {
-          return {
-            ...routine,
-            activities: routine.activities.filter((activity) => activity.id !== routineActivityId),
-          };
-        }
-        return routine;
-      });
-      setRoutines(updatedRoutines);
-    } catch (error) {
-      console.error("Error removing activity from routine", error);
-    }
-  };
+  const handleEdit = async (activity) => {
+    const routineActivityId = activity.routineActivityId
+    await updateRoutineActivity(routineActivityId, token, count, duration)
+  }
 
   return (
     <div className="my-routines">
-      <div className = "routine-header">
-        <h2>Create New Routine</h2>
-        <CreateRoutine token = {token} onCreate={handleCreateRoutine} onCancel={() => setShowRoutineForm(false) } />
-        <h2>My Routines</h2>
+      <button className = "new-routine-button" onClick={() => setShowRoutineForm(!showRoutineForm)}>Create New Routine</button>
+      {/* A form to create a new routine-dependant upon showRoutineForm & update state */}
+      {showRoutineForm && (<div className = "routine-header">
+        {!update && <h2>Create New Routine</h2>}
+        {update && <h2>Update Routine</h2>}
+        <div className="create-form">
+        <form onSubmit={handleSubmit}>
+          <label>Name:</label>
+          <input
+            type="text"
+            required
+            value={name}
+            placeholder="Enter routine name"
+            onChange={(e) => setName(e.target.value)}
+          />
+          <label>Goal:</label>
+          <input
+            type="text"
+            required
+            value={goal}
+            placeholder="Enter routine goal"
+            onChange={(e) => setGoal(e.target.value)}
+          />
+          <label>Public:</label>
+          <input
+            type="checkbox"
+            checked={isPublic}
+            onChange={(e) => setIsPublic(e.target.checked)}
+          />
+          {!update && <button>Create Routine</button>}
+          {update && <button>Update Routine</button>}
+          {error && <p>{error}</p>}
+        </form>
       </div>
+        <h2>My Routines</h2>
+      </div>)}
       {routines.map((routine) => (
         <div key={routine.id} className="routine">
           <h3>{routine.name}</h3>
           <p>Goal: {routine.goal}</p>
-          <button onClick={() => setShowUpdateForm(true)}>Update</button>
+          <div className = "activity-add">
+            <p>Add an Activity:</p>
+            <select onChange={(e) => setActivityId(activities.find(activity => activity.name === e.target.value)?.id)}>
+              {activities.map((activity) => (
+                <option key={activity.id} value={activity.name}>
+                  {activity.name}
+                </option>
+              ))}
+            </select>
+            <p>Count:</p>
+            <input
+              type="number"
+              value={count}
+              onChange={event => setCount(event.target.value)}
+              placeholder="Count"
+              className = "number-input"
+            />
+            <p>Duration:</p>
+            <input
+              type="number"
+              value={duration}
+              onChange={event => setDuration(event.target.value)}
+              placeholder="Duration (minutes)"
+              className = "number-input"
+            />
+            <button onClick={()=>handleAddActivity(routine)}>Add Activity to Routine</button>
+          </div>
+          <h3>Activities</h3>
+          {routine.activities.map((activity)=>
+            (<div className = "activities-on-routines">
+              <p>Name: {activity.name} | Description: {activity.description} | Count: {activity.count} | Duration: {activity.duration}</p>
+              <button onClick={handleEdit(activity)}>Edit Activity</button>
+              <button>Remove Activity From Routine</button>
+            </div>)
+          )}
+          <button onClick={() => updateHandler(routine)}>Update</button>
           <button onClick={() => handleDeleteRoutine(routine.id)}>Delete</button>
-          <button onClick={() => setShowActivityForm(true)}>Manage Activities</button>
-
-          {showUpdateForm && updateRoutineId === routine.id && (
-            <UpdateRoutineForm
-              routine={routine}
-              onUpdate={handleUpdateRoutine}
-              onCancel={() => setShowUpdateForm(false)}
-            />
-          )}
-
-          {showActivityForm && activityRoutineId === routine.id && (
-            <ActivityForm
-              routine={routine}
-              activities={activities} // Pass the list of activities fetched from the API
-              onAddActivity={handleAddActivity}
-              onUpdateActivity={handleUpdateActivity}
-              onRemoveActivity={handleRemoveActivity}
-              onCancel={() => setShowActivityForm(false)}
-            />
-          )}
         </div>
       ))}
     </div>

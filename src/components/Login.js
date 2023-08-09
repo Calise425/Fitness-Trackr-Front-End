@@ -24,7 +24,7 @@ const Login = ({setToken, setUser}) => {
         New User? Register <Link to="/register">here</Link>
       </p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-form">
         <label>Username:</label>
         <input
           type="text"

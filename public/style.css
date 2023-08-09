@@ -24,11 +24,13 @@ nav {
 
 a {
   color: white;
-  margin: 5px
+  margin: 5px;
+  text-decoration: underline;
 }
 
 h2 {
   font-size: 2rem;
+  text-decoration: underline;
 }
 
 #nav {
@@ -55,7 +57,7 @@ h2 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 200%;
+  font-size: 150%;
 }
 
 .form {
@@ -73,16 +75,19 @@ h2 {
   margin-bottom: 10px;
 }
 
+label {
+  font-size: 80%;
+}
 
-
-.create-routine-form {
+.create-form {
   display: flex;
   flex-direction: row;
   font-size: 1.5rem;
 }
 
 .form-text {
-  font-size: 150%;
+  font-size: 120%;
+  margin: 10px;
 }
 
 input {
@@ -99,10 +104,11 @@ button {
   border-radius: 5px;
   padding: 10px;
   margin: 10px 5px 5px;
+  outline: 1px solid rgb(179, 179, 179);
 }
 
 button:hover {
-  background-color: lightgrey;
+  background-color: rgb(17, 163, 231);
   box-shadow: 0px 5px 5px black;
 }
 
@@ -131,7 +137,52 @@ button:hover {
 
 .routine {
   border: 2px solid rgb(154, 154, 154);
+  font-size: 150%;
   border-radius: 5px;
   margin: 2px;
-  padding: 5px
+  padding: 10px
+}
+
+.routine>button {
+  font-size: 70%;
+  margin-left: -2px;
+  margin-right: 10px;
+  outline: 1px solid rgb(179, 179, 179);
+}
+
+.new-routine-button {
+  font-size: 100%;
+}
+
+.activity-add {
+  display: flex;
+  align-items: center;
+}
+
+.number-input {
+  width: 5rem;
+}
+
+.activities-list>ul>li {
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.activities-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.activities-on-routines>button {
+  padding: 5px;
+}
+
+a {
+  cursor: pointer;
+}
+
+a:hover {
+  box-shadow: 0px 5px 5px black;
 }

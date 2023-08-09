@@ -99,7 +99,7 @@ const fetchRoutinesByUsername = async (username, token, setRoutines) => {
 };
 
 // Activities API
-const fetchActivities = async () => {
+const fetchActivities = async (setActivities) => {
   try {
     const response = await fetch(`${BASE_URL}/activities`, {
       headers: {
@@ -108,9 +108,12 @@ const fetchActivities = async () => {
     });
 
     const result = await response.json();
-
-    console.log(result);
-    return result;
+    if (setActivities){
+      setActivities(result)
+    } else {
+      console.log(result);
+      return result;
+    }
   } catch (err) {
     console.error("No Activities Available", err);
   }
@@ -187,7 +190,6 @@ const fetchPublicRoutines = async (setRoutines) => {
   });
   
   const result = await response.json();
-  console.log(result);
   setRoutines(result);
   } catch (err) {
   console.error(err);
@@ -195,7 +197,6 @@ const fetchPublicRoutines = async (setRoutines) => {
 };
 
 const makeRoutines = async (token, name, goal, isPublic) => {
-  console.log("CONSOLE LOG WITHIN MAKE ROUTINES", token, name, goal, isPublic)
   try {
     const response = await fetch(`${BASE_URL}/routines`, {
       method: "POST",
@@ -217,7 +218,7 @@ const makeRoutines = async (token, name, goal, isPublic) => {
   }
 };
 
-const updateRoutines = async (token, routineId, name, goal) => {
+const updateRoutines = async (routineId, token, name, goal) => {
   try {
     const response = await fetch(`${BASE_URL}/routines/${routineId}`, {
       method: "PATCH",
@@ -238,7 +239,7 @@ const updateRoutines = async (token, routineId, name, goal) => {
   }
 };
 
-const deleteRoutine = async (token, routineId) => {
+const deleteRoutine = async (routineId, token) => {
   try {
     const response = await fetch(`${BASE_URL}/routines/${routineId}`, {
       method: "DELETE",
