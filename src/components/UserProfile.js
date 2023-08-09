@@ -24,24 +24,30 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
   const [routineId, setRoutineId] = useState(null);
   const [activityId, setActivityId] = useState(null);
   const [activities, setActivities] = useState([]);
-  const [success, setSuccess] = useState(false);
+  const [activityNames, setActivityNames] = useState([]);
   const [editCount, setEditCount] = useState(0);
   const [editDuration, setEditDuration] = useState(0);
   const [editMode, setEditMode] = useState(false);
+  const [render, setRender] = useState(true)
 
   useEffect(() => {
     fetchActivities(setActivities);
   }, [])
 
   useEffect(() => {
+    const names = activities.map(activity => activity.name);
+    setActivityNames(names.sort());
+  }, [activities]);
+
+  useEffect(() => {
     fetchUserData(token, setUsername);
-  }, [token]);
+  }, [token, editMode, render]);
 
   useEffect(() => {
     if (username) {
       fetchRoutinesByUsername(username, token, setRoutines);
     }
-  }, [username, token, showRoutineForm]);
+  }, [username, token, showRoutineForm, editCount, editMode, render]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,7 +56,6 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
         console.log("routine submitted!", token, name, goal, isPublic);
         const result = await makeRoutines(token, name, goal, isPublic);
         if (result.id) {
-          setSuccess(true)
           setShowRoutineForm(false)
           setUpdate(false);
           setError("")
@@ -95,6 +100,7 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
       await deleteRoutine(routineId, token);
       const filteredRoutines = routines.filter((routine) => routine.id !== routineId);
       setRoutines(filteredRoutines);
+      setRender(!render);
     } catch (error) {
       console.error("Error deleting routine", error);
     }
@@ -104,22 +110,8 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
     const routineId = routine.id;
     try {
       const result = await attachActivityToRoutine(routineId, activityId, count, duration);
-      console.log(result);
-  
-      // Assuming the result includes the newly added activity
-      const newActivity = result.activity;
-  
-      // Update the routines state to include the new activity in the routine's activities array
-      setRoutines((prevRoutines) =>
-        prevRoutines.map((prevRoutine) =>
-          prevRoutine.id === routineId
-            ? {
-                ...prevRoutine,
-                activities: [...prevRoutine.activities, newActivity],
-              }
-            : prevRoutine
-        )
-      );
+      setRender(!render);
+      console.log(result)
     } catch (error) {
       console.error("Error attaching activity to routine", error);
     }
@@ -129,18 +121,7 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
     const routineActivityId = routine.activities[activityIndex].routineActivityId;
     try {
       await deleteRoutineActivity(routineActivityId, token);
-      // Assuming the deleteRoutineActivity call was successful,
-      // remove the activity from the routine's activities array in the state
-      setRoutines((prevRoutines) =>
-        prevRoutines.map((prevRoutine) =>
-          prevRoutine.id === routine.id
-            ? {
-                ...prevRoutine,
-                activities: prevRoutine.activities.filter((_, index) => index !== activityIndex),
-              }
-            : prevRoutine
-        )
-      );
+      setRender(!render);
     } catch (error) {
       console.error("Error removing activity from routine", error);
     }
@@ -153,8 +134,6 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
     setEditDuration(activity.duration);
     setEditMode(true);
     setActivityId(activity.id);
-  
-    console.log("State variables updated:", "editCount =", editCount, "editDuration =", editDuration);
   };
   
   const handleSaveChanges = async (activity) => {
@@ -164,24 +143,6 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
     try {
       await updateRoutineActivity(routineActivityId, token, editCount, editDuration);
       console.log("Activity updated in API");
-      // Update the activity's count and duration in the state immediately
-      setRoutines((prevRoutines) =>
-        prevRoutines.map((prevRoutine) =>
-          prevRoutine.id === routineId
-            ? {
-                ...prevRoutine,
-                activities: prevRoutine.activities.map((a) =>
-                  a.id === activity.id
-                    ? { ...a, count: editCount, duration: editDuration }
-                    : a
-                ),
-              }
-            : prevRoutine
-        )
-      );
-      console.log("Routines state updated with new activity data");
-
-      // Exit edit mode after saving changes
       setEditMode(false);
     } catch (error) {
       console.error("Error updating activity", error);
@@ -231,11 +192,12 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
           <h3>{routine.name}</h3>
           <p>Goal: {routine.goal}</p>
           <div className = "activity-add">
-            <p>Add an Activity:</p>
+            <p>Add an Activity: </p>
             <select onChange={(e) => setActivityId(activities.find(activity => activity.name === e.target.value)?.id)}>
-              {activities.map((activity) => (
-                <option key={activity.id} value={activity.name}>
-                  {activity.name}
+            <option value="none" >Select an Activity</option>
+              {activityNames.map((name, index) => (
+                <option key={index} value={name}>
+                  {name}
                 </option>
               ))}
             </select>
@@ -263,7 +225,6 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
               <p>
                 Name: {activity.name} | Description: {activity.description} | Count: {activity.count} | Duration: {activity.duration}
               </p>
-              {console.log("Rendering edit fields: editCount =", editCount, "editDuration =", editDuration)}
 
               {editMode && activity.id === activityId && (
                 <>
@@ -290,8 +251,8 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
               <button onClick={() => handleRemoveActivity(routine, activityIndex)}>Remove Activity From Routine</button>
             </div>
           ))}
-          <button onClick={() => updateHandler(routine)}>Update</button>
-          <button onClick={() => handleDeleteRoutine(routine.id)}>Delete</button>
+          <button onClick={() => updateHandler(routine)}>Update Routine</button>
+          <button onClick={() => handleDeleteRoutine(routine.id)}>Delete Routine</button>
         </div>
       ))}
     </div>

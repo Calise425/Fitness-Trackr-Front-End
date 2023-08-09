@@ -111,7 +111,6 @@ const fetchActivities = async (setActivities) => {
     if (setActivities){
       setActivities(result)
     } else {
-      console.log(result);
       return result;
     }
   } catch (err) {
@@ -303,7 +302,7 @@ const deleteRoutineActivity = async (routineActivityId, token) => {
   try {
     const response = await fetch(`${BASE_URL}/routine_activities/${routineActivityId}`, {
       method: "DELETE",
-      headers: {
+      headers: {  
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       }

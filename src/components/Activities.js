@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { fetchActivities, makeActivities } from "../api/apiHelper";
 
 const ActivitiesList = ({ token }) => {
@@ -65,7 +66,9 @@ const ActivitiesList = ({ token }) => {
         <ul>
           {activities.map((activity) => (
             <li key={activity.id}>
-              {activity.name} - {activity.description}
+            <Link to={`/activities/${activity.id}`}>{activity.name}</Link>
+            {" | "}
+            {activity.description}
             </li>
           ))}
         </ul>
