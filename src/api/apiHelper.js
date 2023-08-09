@@ -33,7 +33,7 @@ const registerUser = async (
   }
 };
 
-const login = async (username, password, setToken, setMessage, setSuccess, setUser) => {
+const login = async (username, password, setToken, setMessage,  setUser) => {
   try {
     const response = await fetch(`${BASE_URL}/users/login`, {
       method: "POST",
@@ -48,7 +48,6 @@ const login = async (username, password, setToken, setMessage, setSuccess, setUs
     const result = await response.json();
     console.log(result);
     if (result.token) {
-      setSuccess(true)
       setUser(result.user.username)
     }
     setToken(result.token);

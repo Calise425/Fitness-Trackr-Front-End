@@ -7,12 +7,11 @@ const Login = ({setToken, setUser}) => {
   const [message, setMessage] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(username, password, setToken, setMessage, setSuccess, setUser);
+      await login(username, password, setToken, setMessage, setUser);
       setUsername("");
       setPassword("");
       navigate("/my-routines");

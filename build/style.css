@@ -1,0 +1,188 @@
+* {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background-color: rgb(72, 72, 72);
+  color: white;
+}
+
+#app {
+  height: 100%;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+nav {
+  display: flex;
+  color: white;
+  justify-content: space-around;
+}
+
+a {
+  color: white;
+  margin: 5px;
+  text-decoration: underline;
+}
+
+h2 {
+  font-size: 2rem;
+  text-decoration: underline;
+}
+
+#nav {
+  background-color: rgb(0, 67, 118);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  font-weight: bold;
+  font-size: larger;
+  color: rgb(255, 255, 255);
+  box-shadow: inset 0 -10px 20px rgb(57, 57, 57);
+}
+
+.sub-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 150%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 25px;
+  padding: 20px;
+}
+
+.form>h2 {
+  font-size: 250%;
+  margin-top: -30px;
+  margin-bottom: 10px;
+}
+
+label {
+  font-size: 80%;
+}
+
+.create-form {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.5rem;
+}
+
+.form-text {
+  font-size: 120%;
+  margin: 10px;
+}
+
+input {
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 5px;
+  font-size: 60%
+}
+
+button {
+  font-size: 60%;
+  background-color: rgb(0, 67, 118);
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 5px 5px;
+  outline: 1px solid rgb(179, 179, 179);
+}
+
+button:hover {
+  background-color: rgb(17, 163, 231);
+  box-shadow: 0px 5px 5px black;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  font-size: 2rem;
+}
+
+.routine-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.routines-containter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.routine {
+  border: 2px solid rgb(154, 154, 154);
+  font-size: 150%;
+  border-radius: 5px;
+  margin: 2px;
+  padding: 10px
+}
+
+.routine>button {
+  font-size: 70%;
+  margin-left: -2px;
+  margin-right: 10px;
+  outline: 1px solid rgb(179, 179, 179);
+}
+
+.new-routine-button {
+  font-size: 100%;
+}
+
+.activity-add {
+  display: flex;
+  align-items: center;
+}
+
+.number-input {
+  width: 5rem;
+}
+
+.activities-list>ul>li {
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.activities-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.activities-on-routines>button {
+  padding: 5px;
+}
+
+a {
+  cursor: pointer;
+}
+
+a:hover {
+  box-shadow: 0px 5px 5px black;
+}

@@ -7,7 +7,6 @@ import {
   Register, 
   MyRoutines, 
   ActivitiesList,
-  CreateRoutine,
   ActivityRoutines,
   RoutinesByUsername
 } from "./components";
@@ -27,7 +26,6 @@ const App = () => {
   const [me, setMe] = useState("")
   const [routines, setRoutines] = useState([]);
   const { username } = useParams();
-
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -56,7 +54,7 @@ const App = () => {
           <Link to="/routines">Routines</Link>
           <Link to="/activities">Activities</Link>
           <Link to={token ? "/my-routines" : "/login"}>{token ? "My Routines" : "Login"}</Link>
-          {token && <a onClick={logout}>Logout</a>}
+          {token && <Link to = "/" onClick={logout}>Logout</Link>}
         </nav>
       </div>
       <Routes>
