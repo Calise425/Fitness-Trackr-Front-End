@@ -125,6 +125,28 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
     }
   };
 
+  const handleRemoveActivity = async (routine, activityIndex) => {
+    const routineActivityId = routine.activities[activityIndex].routineActivityId;
+    try {
+      await deleteRoutineActivity(routineActivityId, token);
+      // Assuming the deleteRoutineActivity call was successful,
+      // remove the activity from the routine's activities array in the state
+      setRoutines((prevRoutines) =>
+        prevRoutines.map((prevRoutine) =>
+          prevRoutine.id === routine.id
+            ? {
+                ...prevRoutine,
+                activities: prevRoutine.activities.filter((_, index) => index !== activityIndex),
+              }
+            : prevRoutine
+        )
+      );
+    } catch (error) {
+      console.error("Error removing activity from routine", error);
+    }
+  };
+
+
   const handleEdit = async (activity) => {
     console.log("Editing activity:", activity);
     setEditCount(activity.count);
@@ -236,7 +258,7 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
             <button onClick={()=>handleAddActivity(routine)}>Add Activity to Routine</button>
           </div>
           <h3>Activities</h3>
-          {routine.activities.map((activity) => (
+          {routine.activities.map((activity, activityIndex) => (
             <div key={activity.id} className="activities-on-routines">
               <p>
                 Name: {activity.name} | Description: {activity.description} | Count: {activity.count} | Duration: {activity.duration}
@@ -265,7 +287,7 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
                 </>
               )}
               <button onClick={() => handleEdit(activity)}>Edit Activity</button>
-              <button>Remove Activity From Routine</button>
+              <button onClick={() => handleRemoveActivity(routine, activityIndex)}>Remove Activity From Routine</button>
             </div>
           ))}
           <button onClick={() => updateHandler(routine)}>Update</button>
