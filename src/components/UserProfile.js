@@ -25,6 +25,9 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
   const [activityId, setActivityId] = useState(null);
   const [activities, setActivities] = useState([]);
   const [success, setSuccess] = useState(false);
+  const [editCount, setEditCount] = useState(0);
+  const [editDuration, setEditDuration] = useState(0);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     fetchActivities(setActivities);
@@ -123,9 +126,45 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
   };
 
   const handleEdit = async (activity) => {
-    const routineActivityId = activity.routineActivityId
-    await updateRoutineActivity(routineActivityId, token, count, duration)
-  }
+    console.log("Editing activity:", activity);
+    setEditCount(activity.count);
+    setEditDuration(activity.duration);
+    setEditMode(true);
+    setActivityId(activity.id);
+  
+    console.log("State variables updated:", "editCount =", editCount, "editDuration =", editDuration);
+  };
+  
+  const handleSaveChanges = async (activity) => {
+    console.log("Saving changes for activity:", activity);
+  
+    const routineActivityId = activity.routineActivityId;
+    try {
+      await updateRoutineActivity(routineActivityId, token, editCount, editDuration);
+      console.log("Activity updated in API");
+      // Update the activity's count and duration in the state immediately
+      setRoutines((prevRoutines) =>
+        prevRoutines.map((prevRoutine) =>
+          prevRoutine.id === routineId
+            ? {
+                ...prevRoutine,
+                activities: prevRoutine.activities.map((a) =>
+                  a.id === activity.id
+                    ? { ...a, count: editCount, duration: editDuration }
+                    : a
+                ),
+              }
+            : prevRoutine
+        )
+      );
+      console.log("Routines state updated with new activity data");
+
+      // Exit edit mode after saving changes
+      setEditMode(false);
+    } catch (error) {
+      console.error("Error updating activity", error);
+    }
+  };
 
   return (
     <div className="my-routines">
@@ -197,9 +236,34 @@ const MyRoutines = ({ token, routines, setRoutines }) => {
             <button onClick={()=>handleAddActivity(routine)}>Add Activity to Routine</button>
           </div>
           <h3>Activities</h3>
-          {routine.activities.map((activity)=>
-            (<div key={activity.id} className = "activities-on-routines">
-              <p>Name: {activity.name} | Description: {activity.description} | Count: {activity.count} | Duration: {activity.duration}</p>
+          {routine.activities.map((activity) => (
+            <div key={activity.id} className="activities-on-routines">
+              <p>
+                Name: {activity.name} | Description: {activity.description} | Count: {activity.count} | Duration: {activity.duration}
+              </p>
+              {console.log("Rendering edit fields: editCount =", editCount, "editDuration =", editDuration)}
+
+              {editMode && activity.id === activityId && (
+                <>
+                  <p>Count:</p>
+                  <input
+                    type="number"
+                    value={editCount}
+                    onChange={(event) => setEditCount(event.target.value)}
+                    placeholder="Count"
+                    className="number-input"
+                  />
+                  <p>Duration:</p>
+                  <input
+                    type="number"
+                    value={editDuration}
+                    onChange={(event) => setEditDuration(event.target.value)}
+                    placeholder="Duration (minutes)"
+                    className="number-input"
+                  />
+                  <button onClick={() => handleSaveChanges(activity)}>Save Changes</button>
+                </>
+              )}
               <button onClick={() => handleEdit(activity)}>Edit Activity</button>
               <button>Remove Activity From Routine</button>
             </div>
